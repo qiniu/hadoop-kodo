@@ -14,10 +14,10 @@ import org.slf4j.LoggerFactory;
 import java.io.IOException;
 import java.net.URI;
 
-public class ITestQiniuKodoSingleOperationCompareWithS3A {
+public class ITestSingleOperationCompareWithS3A {
     private final QiniuKodoFileSystem kodoFs = new QiniuKodoFileSystem();
     private final S3AFileSystem s3aFs = new S3AFileSystem();
-    private static final Logger LOG = LoggerFactory.getLogger(ITestQiniuKodoSingleOperationCompareWithS3A.class);
+    private static final Logger LOG = LoggerFactory.getLogger(ITestSingleOperationCompareWithS3A.class);
 
     @Before
     public void setup() throws Exception {
