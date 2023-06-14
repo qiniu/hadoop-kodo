@@ -33,7 +33,7 @@ The purpose of this project is to integrate Kodo natively into Hadoop/Spark proj
 + **Bucket**: The container in which data is stored in Kodo, whose name is defined by the user
 + **AccessKey**: Used to identify the user's identity in Kodo
 + **SecretKey**: The key used to verify the user's identity in Kodo
-+ **kodo**: In Hadoop-Qiniu, `kodo` is used as its URI scheme
++ **kodo**: In hadoop-kodo, `kodo` is used as its URI scheme
 
 # Project Structure Design
 

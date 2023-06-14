@@ -1,10 +1,10 @@
-# Mock Test the hadoop-qiniu Module
+# Mock Test the hadoop-kodo Module
 
 The project also supports offline testing based mock, which simulates the Kodo service based on the `HashMap` data
 structure in memory, and does not require any authentication information.
 
 But in order to prevent `maven` from skipping the test, you still need to create
-an `hadoop-cloud-storage-project/hadoop-qiniu/src/test/resources/auth-keys.xml` file, but no
+an `hadoop-kodo/src/test/resources/auth-keys.xml` file, but no
 authentication information is required. You can create a file with the following content:
 
 ```xml
@@ -16,7 +16,7 @@ authentication information is required. You can create a file with the following
 ```
 
 We also need to create the
-file `hadoop-cloud-storage-project/hadoop-qiniu/src/test/resources/contract-test-options.xml`, the content of this file
+file `hadoop-kodo/src/test/resources/contract-test-options.xml`, the content of this file
 is as follows:
 
 ```xml
@@ -47,11 +47,11 @@ is as follows:
 
 ## Use maven command
 
-To run the contract tests, you need to use the `mvn` command in the `hadoop-cloud-storage-project/hadoop-qiniu/` folder,
+To run the contract tests, you need to use the `mvn` command in the `hadoop-kodo/` folder,
 and specify all the test classes that need to be run using the `-Dtest` parameter, for example:
 
 ```shell
-cd hadoop-cloud-storage-project/hadoop-qiniu/
+cd hadoop-kodo/
 mvn test -Dtest=ITestQiniuKodoFileSystemContractBase,ITestQiniuKodoContractCreate,ITestQiniuKodoContractDelete,ITestQiniuKodoContractDistCp,ITestQiniuKodoContractGetFileStatus,ITestQiniuKodoContractMkdir,ITestQiniuKodoContractOpen,ITestQiniuKodoContractRename,ITestQiniuKodoContractRootDir,ITestQiniuKodoContractSeek
 ```
 
@@ -59,9 +59,9 @@ mvn test -Dtest=ITestQiniuKodoFileSystemContractBase,ITestQiniuKodoContractCreat
 > `java.lang.NoSuchMethodError`, please first in the outermost `hadoop` repository, execute
 > the `mvn install -DskipTests` command
 
-# Living Test the hadoop-qiniu Module
+# Living Test the hadoop-kodo Module
 
-To test `kodo://` filesystem client，two files in `hadoop-qiniu/src/test/resources` which pass in
+To test `kodo://` filesystem client，two files in `hadoop-kodo/src/test/resources` which pass in
 authentication details to the test runner are needed.
 
 1. `auth-keys.xml`
@@ -99,10 +99,10 @@ Kodo. If you test in private-cloud environment, the host related region should a
 
 ## Run Hadoop Contract Test
 
-Create file `hadoop-cloud-storage-project/hadoop-qiniu/src/test/resources/contract-test-options.xml`, If a
+Create file `hadoop-kodo/src/test/resources/contract-test-options.xml`, If a
 specific file `fs.contract.test.fs.kodo` test path is not defined, those tests will be skipped.
 Credentials are also needed to run any of those tests, they can be copied
-from `hadoop-cloud-storage-project/hadoop-qiniu/src/test/resources/auth-keys.xml` and through direct
+from `hadoop-kodo/src/test/resources/auth-keys.xml` and through direct
 XInclude inclusion. Here is an example of `contract-test-options.xml`:
 
 ```xml
@@ -151,11 +151,11 @@ XInclude inclusion. Here is an example of `contract-test-options.xml`:
 
 ### Use maven command
 
-To run the contract tests, you need to use the `mvn` command in the `hadoop-cloud-storage-project/hadoop-qiniu/` folder,
+To run the contract tests, you need to use the `mvn` command in the `hadoop-kodo/` folder,
 and specify all the test classes that need to be run using the `-Dtest` parameter, for example:
 
 ```shell
-cd hadoop-cloud-storage-project/hadoop-qiniu/
+cd hadoop-kodo/
 mvn test -Dtest=ITestQiniuKodoFileSystemContractBase,ITestQiniuKodoContractCreate,ITestQiniuKodoContractDelete,ITestQiniuKodoContractDistCp,ITestQiniuKodoContractGetFileStatus,ITestQiniuKodoContractMkdir,ITestQiniuKodoContractOpen,ITestQiniuKodoContractRename,ITestQiniuKodoContractRootDir,ITestQiniuKodoContractSeek
 ```
 

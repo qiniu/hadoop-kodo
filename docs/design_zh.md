@@ -33,7 +33,7 @@ Apache Hadoop 项目中，缺少一种通过 Hadoop/Spark 原生支持操作 Kod
 + **Bucket**: Kodo中存储数据的容器，其名称由用户自定义
 + **AccessKey**: Kodo中用于标识用户身份
 + **SecretKey**: Kodo中用于对用户身份进行验证的密钥
-+ **kodo**: Hadoop-Qiniu中，使用`kodo`作为其URI scheme
++ **kodo**: hadoop-kodo中，使用`kodo`作为其URI scheme
 
 # 项目结构设计
 
