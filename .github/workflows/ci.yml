@@ -24,11 +24,11 @@ jobs:
         run: mvn test -Dtest="**/ITestQiniuKodo*"
 
       - name: Generate online test files
-        if: secrets.QINIU_ACCESS_KEY != '' && secrets.QINIU_SECRET_KEY != '' && secrets.QINIU_BUCKET != ''
+        if: secrets.QINIU_ACCESS_KEY && secrets.QINIU_SECRET_KEY && secrets.QINIU_BUCKET
         run: |
           python3 tools/kv_xml_gen.py src/test/resources/auth-keys.xml fs.qiniu.test.useMock false fs.qiniu.auth.accessKey ${{ secrets.QINIU_ACCESS_KEY }} fs.qiniu.auth.secretKey ${{ secrets.QINIU_SECRET_KEY }}
           python3 tools/kv_xml_gen.py src/test/resources/contract-test-options.xml fs.contract.test.fs.kodo kodo://${{ secrets.QINIU_BUCKET }}
 
       - name: Run online tests
-        if: secrets.QINIU_ACCESS_KEY != '' && secrets.QINIU_SECRET_KEY != '' && secrets.QINIU_BUCKET != ''
+        if: secrets.QINIU_ACCESS_KEY && secrets.QINIU_SECRET_KEY && secrets.QINIU_BUCKET
         run: mvn test -Dtest="**/ITestQiniuKodo*"
