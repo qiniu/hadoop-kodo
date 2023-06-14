@@ -1,4 +1,4 @@
-name: Hadoop Kodo CI
+name: Hadoop Kodo Online Integration Test
 on: workflow_dispatch
 jobs:
   build:
