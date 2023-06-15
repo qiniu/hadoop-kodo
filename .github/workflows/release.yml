@@ -55,7 +55,7 @@ jobs:
         run: mvn package test -Dtest="**/ITestQiniuKodo*" -Dhadoop.version=${{ matrix.hadoop-version }} -Dself.version=${{ github.event.inputs.hadoop-kodo-version }}
 
       - name: Upload Jar to release draft
-        id: upload-release-asset-${{ matrix.hadoop-version }}
+        id: upload-release-assets
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
