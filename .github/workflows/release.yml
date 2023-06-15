@@ -8,12 +8,14 @@ on:
         required: true
         default: '1.0.0'
 
+permissions: write-all
+
 jobs:
   create_release:
     name: Create Release
     runs-on: ubuntu-latest
     outputs:
-      release-version: ${{ steps.release.outputs.release-version }}
+      upload_url: ${{ steps.create_release.outputs.upload_url }}
     steps:
       - name: Create Release Draft
         id: release
@@ -25,6 +27,8 @@ jobs:
           release_name: Release v${{ github.event.inputs.hadoop-kodo-version }}
           draft: true
           prerelease: false
+          body: |
+            Release Notes
 
   build_and_upload_jar:
     name: Build and Upload Jar
@@ -48,7 +52,7 @@ jobs:
         run: python3 tools/kv_xml_gen.py src/test/resources/auth-keys.xml fs.qiniu.test.useMock true
 
       - name: Run mock tests
-        run: mvn package test -Dtest="**/ITestQiniuKodo*" -Dhadoop.version=${{ matrix.hadoop-version }}
+        run: mvn package test -Dtest="**/ITestQiniuKodo*" -Dhadoop.version=${{ matrix.hadoop-version }} -Dself.version=${{ github.event.inputs.hadoop-kodo-version }}
 
       - name: Upload Jar to release draft
         uses: actions/upload-release-asset@v1
