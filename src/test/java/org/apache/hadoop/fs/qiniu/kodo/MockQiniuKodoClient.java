@@ -3,8 +3,8 @@ package org.apache.hadoop.fs.qiniu.kodo;
 import org.apache.hadoop.fs.RemoteIterator;
 import org.apache.hadoop.fs.qiniu.kodo.client.IQiniuKodoClient;
 import org.apache.hadoop.fs.qiniu.kodo.client.QiniuKodoFileInfo;
-import org.apache.hadoop.io.IOUtils;
-import org.apache.hadoop.util.functional.RemoteIterators;
+import org.apache.hadoop.fs.qiniu.kodo.util.RemoteIteratorUtils;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,12 +51,20 @@ public class MockQiniuKodoClient implements IQiniuKodoClient {
         return getFileStatus(key).size;
     }
 
+    private static byte[] readAll(InputStream stream) {
+        try {
+            return org.apache.commons.io.IOUtils.toByteArray(stream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     @Override
     public void upload(InputStream stream, String key, boolean overwrite) throws IOException {
         if (!overwrite && mockFileMap.containsKey(key)) {
             throw new IOException("key already exists: " + key);
         }
-        byte[] data = IOUtils.readFullyToByteArray(new DataInputStream(stream));
+        byte[] data = readAll(stream);
         MockFile mockFile = new MockFile(key, System.currentTimeMillis(), data);
         mockFileMap.put(key, mockFile);
     }
@@ -137,7 +145,7 @@ public class MockQiniuKodoClient implements IQiniuKodoClient {
 
     @Override
     public RemoteIterator<QiniuKodoFileInfo> listStatusIterator(String prefixKey, boolean useDirectory) throws IOException {
-        return RemoteIterators.remoteIteratorFromIterable(listStatus(prefixKey, useDirectory));
+        return RemoteIteratorUtils.remoteIteratorFromIterable(listStatus(prefixKey, useDirectory));
     }
 
     @Override

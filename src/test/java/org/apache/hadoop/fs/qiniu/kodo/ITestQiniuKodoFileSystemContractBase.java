@@ -34,7 +34,7 @@ public class ITestQiniuKodoFileSystemContractBase extends FileSystemContractBase
             fs.initialize(URI.create(conf.get(TestConstants.CONFIG_TEST_CONTRACT_FS_KEY)), conf);
         }
 
-        fs.delete(getTestBaseDir(), true);
+        fs.delete(path("/"), true);
     }
 
     @Override

@@ -56,6 +56,13 @@ public class ITestQiniuKodoClient {
         client.upload(new ByteArrayInputStream(data2), "test_key", true);
     }
 
+    private static byte[] readAll(InputStream stream) {
+        try {
+            return org.apache.commons.io.IOUtils.toByteArray(stream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
     @Test
     public void testUploadAndFetch() throws IOException {
         // Upload a test file
@@ -66,7 +73,7 @@ public class ITestQiniuKodoClient {
 
         // Fetch the file and check its content
         InputStream fetchedStream = client.fetch(testKey, 0, testData.length);
-        byte[] fetchedData = IOUtils.readFullyToByteArray(new DataInputStream(fetchedStream));
+        byte[] fetchedData = readAll(fetchedStream);
         assertArrayEquals(testData, fetchedData);
     }
 
@@ -144,7 +151,7 @@ public class ITestQiniuKodoClient {
 
         // Fetch the copied file and check its content
         InputStream fetchedStream = client.fetch(newKey, 0, testData.length);
-        byte[] fetchedData = IOUtils.readFullyToByteArray(new DataInputStream(fetchedStream));
+        byte[] fetchedData = readAll(fetchedStream);
         assertArrayEquals(testData, fetchedData);
     }
 

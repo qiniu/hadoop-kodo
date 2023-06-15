@@ -17,10 +17,10 @@ import org.apache.hadoop.fs.qiniu.kodo.download.blockreader.QiniuKodoGeneralBloc
 import org.apache.hadoop.fs.qiniu.kodo.download.blockreader.QiniuKodoRandomBlockReader;
 import org.apache.hadoop.fs.qiniu.kodo.upload.QiniuKodoOutputStream;
 import org.apache.hadoop.fs.qiniu.kodo.util.QiniuKodoUtils;
+import org.apache.hadoop.fs.qiniu.kodo.util.RemoteIteratorUtils;
 import org.apache.hadoop.security.UserGroupInformation;
 import org.apache.hadoop.security.authorize.AuthorizationException;
 import org.apache.hadoop.util.Progressable;
-import org.apache.hadoop.util.functional.RemoteIterators;
 import org.apache.log4j.Level;
 import org.apache.log4j.LogManager;
 import org.slf4j.Logger;
@@ -420,21 +420,20 @@ public class QiniuKodoFileSystem extends FileSystem {
 
     @Override
     public FileStatus[] listStatus(Path path) throws IOException {
-        return RemoteIterators.toArray(listStatusIterator(path), new FileStatus[0]);
+        return RemoteIteratorUtils.toArray(listStatusIterator(path), new FileStatus[0]);
     }
 
     @Override
     public RemoteIterator<FileStatus> listStatusIterator(Path path) throws IOException {
         FileStatus status = getFileStatus(path);
         if (status.isFile()) {
-            return RemoteIterators.remoteIteratorFromSingleton(status);
+            return RemoteIteratorUtils.remoteIteratorFromSingleton(status);
         }
 
         final String key = QiniuKodoUtils.keyToDirKey(QiniuKodoUtils.pathToKey(workingDir, path));
-        return RemoteIterators.mappingRemoteIterator(
-                kodoClient.listStatusIterator(key, true),
-                this::fileInfoToFileStatus
-        );
+        return RemoteIteratorUtils.mappingRemoteIterator(
+            kodoClient.listStatusIterator(key, true),
+            this::fileInfoToFileStatus);
     }
 
     @Override

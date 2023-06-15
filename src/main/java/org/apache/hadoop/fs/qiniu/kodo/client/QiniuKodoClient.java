@@ -23,9 +23,9 @@ import org.apache.hadoop.fs.qiniu.kodo.config.MissingConfigFieldException;
 import org.apache.hadoop.fs.qiniu.kodo.config.QiniuKodoFsConfig;
 import org.apache.hadoop.fs.qiniu.kodo.config.client.base.ListAndBatchBaseConfig;
 import org.apache.hadoop.fs.qiniu.kodo.config.client.base.ListProducerConfig;
+import org.apache.hadoop.fs.qiniu.kodo.util.RemoteIteratorUtils;
 import org.apache.hadoop.security.authorize.AuthorizationException;
 import org.apache.hadoop.util.VersionInfo;
-import org.apache.hadoop.util.functional.RemoteIterators;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -348,7 +348,7 @@ public class QiniuKodoClient implements IQiniuKodoClient {
 
     @Override
     public List<QiniuKodoFileInfo> listStatus(String prefixKey, boolean useDirectory) throws IOException {
-        return RemoteIterators.toList(listStatusIterator(prefixKey, useDirectory));
+        return RemoteIteratorUtils.toList(listStatusIterator(prefixKey, useDirectory));
     }
 
 
