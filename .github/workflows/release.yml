@@ -1,12 +1,11 @@
 name: Release hadoop-kodo
 
 on:
-  workflow_dispatch:
-    inputs:
-      hadoop-kodo-version:
-        description: 'Hadoop Kodo version'
-        required: true
-        default: '1.0.0'
+  push:
+    branches:
+      - main
+    tags:
+      - v*
 
 permissions: write-all
 
@@ -23,8 +22,8 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
-          tag_name: v${{ github.event.inputs.hadoop-kodo-version }}
-          release_name: Release v${{ github.event.inputs.hadoop-kodo-version }}
+          tag_name: ${{ github.ref }}
+          release_name: Release ${{ github.ref }}
           draft: true
           prerelease: false
           body: |
@@ -39,6 +38,8 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
 
       - name: Set up JDK 1.8
         uses: actions/setup-java@v3
@@ -73,6 +74,12 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v3
+        with:
+          ref: ${{ github.ref }}
+
+      - name: Set version by tag
+        id: set-version-by-tag
+        run: echo ::set-output name=version::${GITHUB_REF#refs/v*/}
 
       - name: Set up JDK 1.8
         uses: actions/setup-java@v3
@@ -85,7 +92,7 @@ jobs:
         run: python3 tools/kv_xml_gen.py src/test/resources/auth-keys.xml fs.qiniu.test.useMock true
 
       - name: Run mock tests
-        run: mvn package test -Dtest="**/ITestQiniuKodo*" -Dhadoop.version=${{ matrix.hadoop-version }} -Dself.version=${{ github.event.inputs.hadoop-kodo-version }}
+        run: mvn package test -Dtest="**/ITestQiniuKodo*" -Dhadoop.version=${{ matrix.hadoop-version }} -Dself.version=${{ steps.set-version-by-tag.outputs.version }}
 
       - name: Upload Jar to release draft
         id: upload-release-assets
@@ -94,6 +101,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             upload_url: ${{ needs.create_release.outputs.upload_url }}
-            asset_path: ./target/hadoop-kodo-${{ github.event.inputs.hadoop-kodo-version }}.jar
-            asset_name: hadoop-kodo-${{ matrix.hadoop-version }}-${{ github.event.inputs.hadoop-kodo-version }}.jar
+            asset_path: ./target/hadoop-kodo-${{ steps.set-version-by-tag.outputs.version }}.jar
+            asset_name: hadoop-kodo-${{ matrix.hadoop-version }}-${{ steps.set-version-by-tag.outputs.version }}.jar
             asset_content_type: application/java-archive
