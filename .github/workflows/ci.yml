@@ -2,6 +2,9 @@ name: Hadoop Kodo CI
 on: [push, pull_request]
 jobs:
   build:
+    strategy:
+      matrix:
+        hadoop-version: ["3.1.4", "3.2.4", "3.3.5"]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -14,11 +17,8 @@ jobs:
           distribution: corretto
           cache: maven
 
-      - name: Build with Maven
-        run: mvn package -DskipTests
-
       - name: Generate mock test files
         run: python3 tools/kv_xml_gen.py src/test/resources/auth-keys.xml fs.qiniu.test.useMock true
 
       - name: Run mock tests
-        run: mvn test -Dtest="**/ITestQiniuKodo*"
+        run: mvn package test -Dtest="**/ITestQiniuKodo*" -Dhadoop.version=${{ matrix.hadoop-version }}

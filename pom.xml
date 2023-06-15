@@ -4,9 +4,9 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.qiniu.kodo</groupId>
-    <artifactId>hadoop-kodo</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <groupId>${self.groupId}</groupId>
+    <artifactId>${self.artifactId}</artifactId>
+    <version>${self.version}</version>
 
     <name>Apache Hadoop Qiniu Kodo support</name>
     <description>
@@ -58,6 +58,9 @@
 
         <hadoop.version>3.1.4</hadoop.version>
         <qiniu-java-sdk.version>7.13.0</qiniu-java-sdk.version>
+        <self.groupId>com.qiniu.kodo</self.groupId>
+        <self.artifactId>hadoop-kodo</self.artifactId>
+        <self.version>1.0-SNAPSHOT</self.version>
     </properties>
 
     <profiles>
