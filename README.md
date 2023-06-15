@@ -55,23 +55,29 @@ Your Qiniu credentials not only pay for services, they offer read and write acce
 ## Quick Start
 
 ### 安装
-将`hadoop-kodo-x.x.x.jar`和`qiniu-java-sdk-x.x.x.jar`放到hadoop的share/hadoop/tools/lib目录下
+
+#### 获取`hadoop-kodo`分发包及其依赖：
+
+根据您的Hadoop版本，从以下地址获取`hadoop-kodo`分发包及其依赖：
+
+[hadoop-kodo release](https://github.com/qiniu/hadoop-kodo/releases)
+
+#### 安装`hadoop-kodo`
+
+1. 将`hadoop-kodo-<hadoop.version>-x.x.x.jar`和`qiniu-java-sdk-x.x.x.jar`拷贝到`$HADOOP_HOME/share/hadoop/tools/lib`目录下
+   > 注意：请根据您的Hadoop版本选择对应的`hadoop-kodo`的jar包，若找不到对应版本的jar包，可使用命令`mvn package -DskipTests -Dhadoop.version=<hadoop.version>`自行编译，编译后的jar包位于`target`目录下
+2. 编辑文件`$HADOOP_HOME/etc/hadoop/hadoop-env.sh`，增加如下配置：
+   ```shell
+   for f in $HADOOP_HOME/share/hadoop/tools/lib/*.jar; do
+     if [ "$HADOOP_CLASSPATH" ]; then
+       export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$f
+     else
+       export HADOOP_CLASSPATH=$f
+     fi
+   done
+   ```
 
 ### 配置
-
-#### hadoop-env.sh
-
-编辑文件`$HADOOP_HOME/etc/hadoop/hadoop-env.sh`，增加如下配置：
-
-```shell
-for f in $HADOOP_HOME/share/hadoop/tools/lib/*.jar; do
-  if [ "$HADOOP_CLASSPATH" ]; then
-    export HADOOP_CLASSPATH=$HADOOP_CLASSPATH:$f
-  else
-    export HADOOP_CLASSPATH=$f
-  fi
-done
-```
 
 #### core-site.xml
 
