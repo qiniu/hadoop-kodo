@@ -94,6 +94,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
             upload_url: ${{ needs.create_release.outputs.upload_url }}
-            asset_path: ./target/hadoop-kodo-${{ matrix.hadoop-version }}-${{ github.event.inputs.hadoop-kodo-version }}.jar
-            asset_name: hadoop-kodo-${{ github.event.inputs.hadoop-kodo-version }}.jar
+            asset_path: ./target/hadoop-kodo-${{ github.event.inputs.hadoop-kodo-version }}.jar
+            asset_name: hadoop-kodo-${{ matrix.hadoop-version }}-${{ github.event.inputs.hadoop-kodo-version }}.jar
             asset_content_type: application/java-archive
