@@ -20,5 +20,5 @@ jobs:
       - name: Generate mock test files
         run: python3 tools/kv_xml_gen.py src/test/resources/auth-keys.xml fs.qiniu.test.useMock true
 
-      - name: Run mock tests
+      - name: Run mock tests and package jar
         run: mvn package test -Dtest="**/ITestQiniuKodo*" -Dhadoop.version=${{ matrix.hadoop-version }}
