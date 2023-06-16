@@ -4,7 +4,7 @@ from common import dict2xml
 
 if __name__ == "__main__":
     if len(sys.argv) < 2 or len(sys.argv) % 2 != 0:
-        print("Usage: gen_xml.py <output file> <key1> <value1> <key2> <value2> ...")
+        print("Usage: kv_xml_gen.py <output file> <key1> <value1> <key2> <value2> ...")
         sys.exit(1)
 
     dic = {}
