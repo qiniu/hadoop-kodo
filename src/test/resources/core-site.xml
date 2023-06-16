@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<?xml-stylesheet type="text/xsl" href="configuration.xsl"?>
+
+<configuration>
+    <include xmlns="http://www.w3.org/2001/XInclude" href="auth-keys.xml">
+        <fallback/>
+    </include>
+
+    <property>
+        <name>fs.kodo.impl</name>
+        <value>org.apache.hadoop.fs.qiniu.kodo.QiniuKodoFileSystem</value>
+    </property>
+
+    <property>
+        <name>fs.AbstractFileSystem.kodo.impl</name>
+        <value>org.apache.hadoop.fs.qiniu.kodo.QiniuKodo</value>
+    </property>
+
+    <property>
+        <name>fs.mockkodo.impl</name>
+        <value>org.apache.hadoop.fs.qiniu.kodo.MockQiniuKodoFileSystem</value>
+    </property>
+
+    <property>
+        <name>fs.AbstractFileSystem.mockkodo.impl</name>
+        <value>org.apache.hadoop.fs.qiniu.kodo.MockQiniuKodo</value>
+    </property>
+
+    <property>
+        <name>fs.contract.test.fs.mockkodo</name>
+        <value>mockkodo://mock-bucket</value>
+    </property>
+
+    <property>
+        <name>fs.qiniu.download.useNoCacheHeader</name>
+        <value>true</value>
+    </property>
+</configuration>
