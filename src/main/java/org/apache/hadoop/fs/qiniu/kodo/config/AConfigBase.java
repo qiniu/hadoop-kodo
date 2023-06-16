@@ -20,11 +20,11 @@ public abstract class AConfigBase {
         try {
             return toHashMap().toString();
         } catch (Exception e) {
-            return e.toString();
+            throw new RuntimeException(e);
         }
     }
 
-    public Map<String, Object> toHashMap() throws Exception {
+    private Map<String, Object> toHashMap() throws Exception {
         HashMap<String, Object> result = new HashMap<>();
         Field[] fields = this.getClass().getDeclaredFields();
         for (Field field : fields) {
