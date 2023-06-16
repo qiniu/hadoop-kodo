@@ -155,8 +155,11 @@ public class QiniuKodoFileSystem extends FileSystem {
 
     @Override
     public void close() throws IOException {
-        super.close();
-        generalblockReader.close();
+        try {
+            super.close();
+        } finally {
+            generalblockReader.close();
+        }
     }
 
     private synchronized ExecutorService getUploadExecutorService() {
@@ -432,8 +435,8 @@ public class QiniuKodoFileSystem extends FileSystem {
 
         final String key = QiniuKodoUtils.keyToDirKey(QiniuKodoUtils.pathToKey(workingDir, path));
         return RemoteIteratorUtils.mappingRemoteIterator(
-            kodoClient.listStatusIterator(key, true),
-            this::fileInfoToFileStatus);
+                kodoClient.listStatusIterator(key, true),
+                this::fileInfoToFileStatus);
     }
 
     @Override

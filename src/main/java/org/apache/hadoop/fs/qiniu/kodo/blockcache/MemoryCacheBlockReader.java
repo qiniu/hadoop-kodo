@@ -32,8 +32,11 @@ public class MemoryCacheBlockReader implements IBlockReader {
 
     @Override
     public void close() throws IOException {
-        source.close();
-        lruCache.clear();
+        try {
+            source.close();
+        } finally {
+            lruCache.clear();
+        }
     }
 
     @Override

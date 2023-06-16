@@ -264,8 +264,11 @@ public class DiskCacheBlockReader implements IBlockReader, OnLRUCacheRemoveListe
 
     @Override
     public void close() throws IOException {
-        saveBlockCacheMetaFile();
-        source.close();
-        LOG.debug("Disk cache has been closed");
+        try {
+            saveBlockCacheMetaFile();
+            LOG.debug("Disk cache has been closed");
+        } finally {
+            source.close();
+        }
     }
 }

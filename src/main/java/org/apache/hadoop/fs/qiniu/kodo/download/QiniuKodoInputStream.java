@@ -70,7 +70,10 @@ public class QiniuKodoInputStream extends FSInputStream {
 
     @Override
     public void close() throws IOException {
-        generalStrategy.close();
-        randomStrategy.close();
+        try {
+            generalStrategy.close();
+        } finally {
+            randomStrategy.close();
+        }
     }
 }
