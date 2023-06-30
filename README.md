@@ -72,7 +72,7 @@ mvn package -DskipTests -Dhadoop.version=<hadoop.version>
 mvn dependency:copy-dependencies
 
 # 拷贝其依赖的 qiniu-java-sdk 到 target 目录下
-cp target/dependency/$(ls target/dependency | grep ^qiniu) target/
+cp target/dependency/qiniu-* target/
 ```
 
 #### 安装`hadoop-kodo`
