@@ -62,10 +62,24 @@ Your Qiniu credentials not only pay for services, they offer read and write acce
 
 [hadoop-kodo release](https://github.com/qiniu/hadoop-kodo/releases)
 
+若 Release 中不存在您需要的 hadoop 版本，可自行编译打包，过程如下：
+
+```shell
+# 打包 hadoop-kodo 分发包，其中 <hadoop.version> 为您的目标 hadoop 版本
+mvn package -DskipTests -Dhadoop.version=<hadoop.version>
+
+# 提取其所有依赖包到 target/dependency 目录下
+mvn dependency:copy-dependencies
+
+# 拷贝其依赖的 qiniu-java-sdk 到 target 目录下
+cp target/dependency/$(ls target/dependency | grep ^qiniu) target/
+```
+
 #### 安装`hadoop-kodo`
 
 1. 将`hadoop-kodo-<hadoop.version>-x.x.x.jar`和`qiniu-java-sdk-x.x.x.jar`拷贝到`$HADOOP_HOME/share/hadoop/tools/lib`目录下
-   > 注意：请根据您的Hadoop版本选择对应的`hadoop-kodo`的jar包，若找不到对应版本的jar包，可使用命令`mvn package -DskipTests -Dhadoop.version=<hadoop.version>`自行编译，编译后的jar包位于`target`目录下
+   > 注意：请根据您的Hadoop版本选择对应的`hadoop-kodo`的jar包，若找不到对应版本的jar包，请自行编译
+
 2. 编辑文件`$HADOOP_HOME/etc/hadoop/hadoop-env.sh`，增加如下配置：
    ```shell
    for f in $HADOOP_HOME/share/hadoop/tools/lib/*.jar; do
