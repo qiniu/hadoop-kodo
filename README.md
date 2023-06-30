@@ -47,10 +47,11 @@
 
 
 #### 警告#2：目录最后访问时间不被跟踪
-Features of Hadoop relying on this can have unexpected behaviour. E.g. the AggregatedLogDeletionService of YARN will not remove the appropriate log files.
+依赖此特性的Hadoop特性可能会有意外的行为。例如，YARN的AggregatedLogDeletionService将无法删除相应的日志文件。
 
 #### 警告#3：您的七牛凭证非常非常有价值
-Your Qiniu credentials not only pay for services, they offer read and write access to the data. Anyone with the credentials can not only read your datasets —they can delete them.
+
+你的七牛凭证非常非常有价值。您的七牛凭证不仅可以支付，还可以读写数据。任何拥有凭证的人都可以读取您的 bucket，他们也可以删除这些 bucket。
 
 ## Quick Start
 
