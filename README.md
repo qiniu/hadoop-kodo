@@ -14,15 +14,15 @@
 
 ## 概述
 
-七牛云海量存储系统（Kodo）是自主研发的非结构化数据存储管理平台，支持中心和边缘存储。 平台经过多年大规模用户验证已跻身先进技术行列，并广泛应用于海量数据管理的各类场景。
+七牛云海量存储系统（Kodo）是自主研发的非结构化数据存储管理平台，支持中心和边缘存储。
+平台经过多年大规模用户验证已跻身先进技术行列，并广泛应用于海量数据管理的各类场景。
 
-本模块为`Hadoop`提供了对接[七牛云存储服务Kodo](https://www.qiniu.com/products/kodo)的支持。
+本项目为`Hadoop`提供了对接 [七牛云存储服务 Kodo](https://www.qiniu.com/products/kodo) 的支持。
 
-
-### 特性
+### Features
 
 + 支持 Hadoop MapReduce 和 Spark 在 Kodo 上的读写操作
-+ 实现了 Hadoop 文件系统的接口，通过模拟分级目录结构提供了和HDFS相同的使用体验
++ 实现了 Hadoop 文件系统的接口，通过模拟分级目录结构提供了和 HDFS 相同的使用体验
 + 支持大文件分片上传，最高支持 10TB 的单个文件
 + 使用了 Kodo 的 batch api，具有高性能的文件系统操作能力
 + 支持文件的内存块级缓存和磁盘块级缓存，提高了文件的读取性能
@@ -31,27 +31,29 @@
 
 #### 警告 #1：对象存储不是文件系统
 
-由于对象存储并不是文件系统，因此在使用上存在一些限制
+由于对象存储并不是文件系统，因此在使用上存在一些限制：
+
 1. 对象存储是基于 key-value 的存储，不支持分层目录结构，因此需要使用路径分隔符模拟分层目录结构
 2. 不跟踪目录的修改和访问时间
 3. Kodo 对象存储暂不支持文件的追加写入，因此不能在已有文件的末尾追加写入数据
 4. 不跟踪文件的修改时间，因此在文件系统中，文件的修改时间为文件的创建时间
-5. delete和rename的操作是非原子的，这意味着如果操作被意外中断，文件系统可能处于不一致的状态
-6. 对象存储并不支持unix-like的权限管理，因此在文件系统中，因此需要提供以下规则：
-   + 目录权限为715
-   + 文件权限为666
-   + 文件所有者为本地当前用户
-   + 文件所有组为本地当前用户
-7. 单次请求的最大文件数量为1000
-8. 支持大文件分片上传，但分片数量限制为10000，由于单个分片的最大大小为1GB，因此最大支持10TB的单个文件
-
+5. delete 和 rename 的操作是非原子的，这意味着如果操作被意外中断，文件系统可能处于不一致的状态
+6. 对象存储并不支持 unix-like 的权限管理，因此为了模拟文件系统，需要提供以下规则：
+    + 目录权限为 715
+    + 文件权限为 666
+    + 文件所有者为本地当前用户
+    + 文件所有组为本地当前用户
+7. 单次请求的最大文件数量为 1000
+8. 支持大文件分片上传，但分片数量限制为 10000，由于单个分片的最大大小为 1GB，因此最大支持 10TB 的单个文件
 
 #### 警告#2：目录最后访问时间不被跟踪
-依赖此特性的Hadoop特性可能会有意外的行为。例如，YARN的AggregatedLogDeletionService将无法删除相应的日志文件。
+
+依赖此特性的 Hadoop 特性可能会有意外的行为。例如，YARN 的 AggregatedLogDeletionService 将无法删除相应的日志文件。
 
 #### 警告#3：您的七牛凭证非常非常有价值
 
-你的七牛凭证非常非常有价值。您的七牛凭证不仅可以支付，还可以读写数据。任何拥有凭证的人都可以读取您的 bucket，他们也可以删除这些 bucket。
+您的七牛凭证非常非常有价值。您的七牛凭证不仅可以支付，还可以读写数据。任何拥有凭证的人都可以读取您的 bucket，他们也可以删除这些
+bucket。
 
 ## Quick Start
 
@@ -59,7 +61,7 @@
 
 #### 获取`hadoop-kodo`分发包及其依赖：
 
-根据您的Hadoop版本，从以下地址获取`hadoop-kodo`分发包及其依赖：
+根据您的 Hadoop 版本，从以下地址获取`hadoop-kodo`分发包及其依赖：
 
 [hadoop-kodo release](https://github.com/qiniu/hadoop-kodo/releases)
 
@@ -78,8 +80,8 @@ cp target/dependency/qiniu-* target/
 
 #### 安装`hadoop-kodo`
 
-1. 将`hadoop-kodo-<hadoop.version>-x.x.x.jar`和`qiniu-java-sdk-x.x.x.jar`拷贝到`$HADOOP_HOME/share/hadoop/tools/lib`目录下
-   > 注意：请根据您的Hadoop版本选择对应的`hadoop-kodo`的jar包，若找不到对应版本的jar包，请自行编译
+1. 将`hadoop-kodo-<hadoop.version>-x.x.x.jar`和`qiniu-java-sdk-x.x.x.jar`拷贝到`$HADOOP_HOME/share/hadoop/tools/lib`目录下。
+   > 注意：请根据您的 Hadoop 版本选择对应的`hadoop-kodo`的 jar 包，若找不到对应版本的 jar 包，请自行编译。
 
 2. 编辑文件`$HADOOP_HOME/etc/hadoop/hadoop-env.sh`，增加如下配置：
    ```shell
@@ -96,7 +98,7 @@ cp target/dependency/qiniu-* target/
 
 #### core-site.xml
 
-修改`$HADOOP_HOME/etc/hadoop/core-site.xml`，增加Kodo相关的用户配置与实现类相关信息。在公有云环境下通常仅需配置如下即可正常工作：
+修改`$HADOOP_HOME/etc/hadoop/core-site.xml`，增加 Kodo 相关的用户配置与实现类相关信息。在公有云环境下通常仅需配置如下即可正常工作：
 
 ```xml
 
@@ -124,7 +126,6 @@ cp target/dependency/qiniu-* target/
     <property>
         <name>fs.defaultFS</name>
         <value>kodo://example-bucket-name/</value>
-        <description>hadoop default fs</description>
     </property>
 
 </configuration>
@@ -136,7 +137,7 @@ cp target/dependency/qiniu-* target/
 
 ### 运行 mapreduce 示例程序 wordcount
 
-#### put命令
+#### put 命令
 
 ```shell
 mkdir testDir
@@ -146,7 +147,7 @@ hadoop fs -put testDir kodo:///testDir
 
 ```
 
-#### ls命令
+#### ls 命令
 
 ```shell
 hadoop fs -ls -R kodo://example-bucket/
@@ -156,7 +157,7 @@ drwx--xr-x   - root root          0 1970-01-01 08:00 kodo://example-bucket/testD
 -rw-rw-rw-   0 root root         17 2023-01-18 15:54 kodo://example-bucket/testDir/input.txt
 ```
 
-#### get命令
+#### get 命令
 
 ```shell
 $ hadoop fs -get kodo:///testDir testDir1
@@ -171,7 +172,7 @@ total 8
 hadoop jar $HADOOP_HOME/share/hadoop/mapreduce/hadoop-mapreduce-examples-{version}.jar wordcount kodo://example-bucket/testDir/input.txt kodo://example-bucket/testDir/output
 ```
 
-执行成功后返回统计信息
+执行成功后返回统计信息如下：
 
 ```text
 2023-01-18 16:00:49,228 INFO mapreduce.Job: Counters: 35
@@ -228,7 +229,7 @@ drwx--xr-x   - root root          0 1970-01-01 08:00 kodo://example-bucket/testD
 -rw-rw-rw-   0 root root         25 2023-01-18 16:00 kodo://example-bucket/testDir/output/part-r-00000
 ```
 
-#### cat命令
+#### cat 命令
 
 ```text
 $ hadoop fs -cat kodo://example-bucket/testDir/output/part-r-00000
